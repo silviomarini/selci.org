@@ -129,7 +129,7 @@ function buildEmail() {
                 <tr>
                   <td style="padding:20px 24px;">
                     <p style="margin:0 0 4px;font-family:Arial,Helvetica,sans-serif;font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#4A7030;">In arrivo</p>
-                    <p style="margin:0;font-family:Georgia,'Times New Roman',Times,serif;font-size:19px;font-weight:400;color:#2A4A1A;font-style:italic;">Prima Collezione &mdash; SS&thinsp;'25</p>
+                    <p style="margin:0;font-family:Georgia,'Times New Roman',Times,serif;font-size:19px;font-weight:400;color:#2A4A1A;font-style:italic;">Prima Collezione &mdash; SS&thinsp;'26</p>
                   </td>
                 </tr>
               </table>
@@ -152,7 +152,7 @@ function buildEmail() {
               <p style="margin:0 0 10px;font-family:Georgia,'Times New Roman',Times,serif;font-size:18px;font-weight:400;letter-spacing:4px;color:#2A4A1A;text-transform:lowercase;">selci</p>
               <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:1.7;color:rgba(20,20,16,0.28);letter-spacing:0.3px;">
                 Hai ricevuto questa email perché hai richiesto l'accesso alla lista d'attesa.<br>
-                &copy; 2025 Selci. Tutti i diritti riservati.
+                &copy; 2026 Selci. Tutti i diritti riservati.
               </p>
             </td>
           </tr>
