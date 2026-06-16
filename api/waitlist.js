@@ -88,10 +88,11 @@ function buildEmail() {
           <!-- ── Header ── -->
           <tr>
             <td style="background:#2A4A1A;padding:44px 48px 40px;text-align:center;">
-              <!-- Logo mark (Unicode frog footprint approximation) -->
-              <p style="margin:0 0 12px;font-size:28px;line-height:1;">&#x1F43E;</p>
-              <p style="margin:0;font-family:Georgia,'Times New Roman',Times,serif;font-size:30px;font-weight:400;letter-spacing:6px;color:#F2EDE0;text-transform:lowercase;">selci</p>
-              <p style="margin:10px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:9px;font-weight:700;letter-spacing:3.5px;text-transform:uppercase;color:rgba(242,237,224,0.45);">Nati Selvatici &nbsp;&middot;&nbsp; Fatti per Durare</p>
+              <!-- Logo lockup -->
+              <img src="https://selci.org/assets/images/logo-full-black.png"
+                   alt="selci" width="120" height="auto"
+                   style="display:block;margin:0 auto 16px;filter:brightness(0) invert(1);opacity:0.9;">
+              <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:9px;font-weight:700;letter-spacing:3.5px;text-transform:uppercase;color:rgba(242,237,224,0.45);">Nati Selvatici &nbsp;&middot;&nbsp; Fatti per Durare</p>
             </td>
           </tr>
 
