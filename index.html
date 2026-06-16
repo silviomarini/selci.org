@@ -700,12 +700,45 @@
     revealEls.forEach(el => ro.observe(el));
 
     // ── Waitlist form
-    document.getElementById('wl-form').addEventListener('submit', function(e) {
+    document.getElementById('wl-form').addEventListener('submit', async function(e) {
       e.preventDefault();
-      const email = this.querySelector('input[type="email"]').value;
+      const emailInput = this.querySelector('input[type="email"]');
+      const btn        = this.querySelector('button[type="submit"]');
+      const email      = emailInput.value.trim();
       if (!email) return;
-      this.style.display = 'none';
-      document.getElementById('wl-ok').classList.add('show');
+
+      btn.disabled    = true;
+      btn.textContent = 'Invio…';
+
+      // Clear previous error
+      const prev = document.getElementById('wl-err');
+      if (prev) prev.remove();
+      emailInput.style.borderColor = '';
+
+      try {
+        const res  = await fetch('/api/waitlist', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ email }),
+        });
+        const data = await res.json();
+
+        if (res.ok && data.ok) {
+          this.style.display = 'none';
+          document.getElementById('wl-ok').classList.add('show');
+        } else {
+          throw new Error(data.error || 'Errore');
+        }
+      } catch (_) {
+        btn.disabled  = false;
+        btn.innerHTML = 'Iscriviti <span class="arr">&#x2192;</span>';
+        emailInput.style.borderColor = 'rgba(180,60,60,.5)';
+        const err = document.createElement('p');
+        err.id = 'wl-err';
+        err.style.cssText = 'margin-top:.75rem;font-size:.8rem;color:rgba(160,50,50,.85);text-align:center;';
+        err.textContent   = 'Qualcosa è andato storto. Riprova.';
+        this.after(err);
+      }
     });
   </script>
 </body>
