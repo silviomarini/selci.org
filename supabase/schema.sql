@@ -27,3 +27,16 @@ CREATE OR REPLACE VIEW waitlist_ordered AS
   SELECT id, email, created_at
   FROM waitlist
   ORDER BY created_at DESC;
+
+-- ── Donations table (BTC via OpenNode) ────────────────────────────────────
+
+CREATE TABLE IF NOT EXISTS donations (
+  id          uuid        DEFAULT gen_random_uuid() PRIMARY KEY,
+  charge_id   text        UNIQUE NOT NULL,  -- OpenNode charge ID
+  amount_sats bigint      NOT NULL,
+  status      text        DEFAULT 'paid',
+  paid_at     timestamptz DEFAULT now() NOT NULL
+);
+
+ALTER TABLE donations ENABLE ROW LEVEL SECURITY;
+-- No public policies: only service_role (used by api/btc-webhook.js) can write

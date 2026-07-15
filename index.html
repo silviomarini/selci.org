@@ -485,6 +485,120 @@
     }
     .footer-links a:hover { color: var(--cream); }
 
+    /* ─── BTC DONATE ────────────────────────── */
+    .donate {
+      padding: 5rem 1.5rem;
+      background: var(--dark);
+    }
+    @media (min-width: 768px) { .donate { padding: 7rem 4rem; } }
+    @media (min-width: 1200px) { .donate { padding: 7rem 6rem; } }
+
+    .donate-inner {
+      max-width: 640px;
+    }
+    .donate .section-tag  { color: rgba(242,237,224,.45); }
+    .donate .section-title { color: var(--cream); }
+    .donate .rule { background: rgba(242,237,224,.2); margin: 1.4rem 0; }
+
+    .donate-desc {
+      font-size: .93rem;
+      line-height: 1.75;
+      color: rgba(242,237,224,.55);
+      margin-bottom: 2.2rem;
+    }
+
+    .donate-presets {
+      display: flex;
+      gap: .7rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.2rem;
+    }
+    .preset-btn {
+      padding: .6rem 1.1rem;
+      background: transparent;
+      border: 1px solid rgba(242,237,224,.2);
+      color: rgba(242,237,224,.6);
+      font-family: var(--sans);
+      font-size: .78rem;
+      font-weight: 400;
+      letter-spacing: .06em;
+      cursor: pointer;
+      border-radius: 3px;
+      transition: border-color .2s, color .2s, background .2s;
+    }
+    .preset-btn:hover,
+    .preset-btn.active {
+      border-color: var(--sage);
+      color: var(--cream);
+      background: rgba(74,112,48,.15);
+    }
+
+    .donate-custom {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      margin-bottom: 1.8rem;
+    }
+    .donate-custom label {
+      font-size: .72rem;
+      font-weight: 400;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: rgba(242,237,224,.35);
+      white-space: nowrap;
+    }
+    .donate-custom input[type="number"] {
+      flex: 1;
+      max-width: 160px;
+      padding: .6rem .9rem;
+      background: transparent;
+      border: 1px solid rgba(242,237,224,.15);
+      outline: none;
+      color: var(--cream);
+      font-family: var(--sans);
+      font-size: .88rem;
+      font-weight: 300;
+      border-radius: 3px;
+      transition: border-color .2s;
+      -moz-appearance: textfield;
+    }
+    .donate-custom input::-webkit-outer-spin-button,
+    .donate-custom input::-webkit-inner-spin-button { -webkit-appearance: none; }
+    .donate-custom input:focus { border-color: var(--sage); }
+    .donate-custom span {
+      font-size: .72rem;
+      color: rgba(242,237,224,.3);
+      letter-spacing: .05em;
+    }
+
+    .donate-note {
+      font-size: .72rem;
+      font-weight: 300;
+      letter-spacing: .04em;
+      color: rgba(242,237,224,.28);
+      margin-top: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    .donate-note::before {
+      content: '⚡';
+      font-size: .85rem;
+    }
+
+    .donate-ok {
+      display: none;
+      margin-top: 1.2rem;
+      padding: 1rem 1.2rem;
+      background: rgba(74,112,48,.18);
+      border: 1px solid rgba(74,112,48,.35);
+      border-radius: 3px;
+      color: rgba(242,237,224,.8);
+      font-size: .88rem;
+      line-height: 1.6;
+    }
+    .donate-ok.show { display: block; }
+
     /* ─── PRODUCT MODAL ─────────────────────── */
     .modal-overlay {
       position: fixed;
@@ -720,6 +834,40 @@
     </div>
   </section>
 
+  <!-- ═══ BTC DONATE ══════════════════════════════ -->
+  <section class="donate">
+    <div class="donate-inner">
+      <p class="section-tag reveal">Bitcoin</p>
+      <h2 class="section-title reveal">Supporta<br><em>il lancio.</em></h2>
+      <div class="rule reveal"></div>
+      <p class="donate-desc reveal">
+        Credi nel progetto? Puoi supportare selci con una donazione in Bitcoin — Lightning per micro-tip istantanei, on-chain per qualcosa di più sostanzioso. Ogni sats conta.
+      </p>
+
+      <div class="donate-presets reveal">
+        <button class="preset-btn" data-sats="21000">21.000 sat <span style="opacity:.45;font-size:.68rem;">~€10</span></button>
+        <button class="preset-btn" data-sats="100000">100.000 sat <span style="opacity:.45;font-size:.68rem;">~€45</span></button>
+        <button class="preset-btn" data-sats="250000">250.000 sat <span style="opacity:.45;font-size:.68rem;">~€110</span></button>
+      </div>
+
+      <div class="donate-custom reveal">
+        <label for="custom-sats">Importo libero</label>
+        <input type="number" id="custom-sats" placeholder="es. 50000" min="1000" step="1000">
+        <span>sats</span>
+      </div>
+
+      <button class="btn-solid reveal" id="donate-btn">
+        Procedi con Bitcoin &nbsp;&#x20BF;
+      </button>
+
+      <p class="donate-note reveal">Lightning Network e on-chain supportati · powered by OpenNode</p>
+
+      <div class="donate-ok" id="donate-ok">
+        Reindirizzamento al checkout Bitcoin — completa il pagamento nella nuova scheda. Grazie per il tuo supporto &#x26A1;
+      </div>
+    </div>
+  </section>
+
   <!-- ═══ WAITLIST ══════════════════════════════ -->
   <section class="waitlist" id="waitlist">
     <div class="waitlist-inner">
@@ -820,6 +968,60 @@
     modalCta.addEventListener('click', closeAndScroll);
     modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    // ── BTC Donate
+    let selectedSats = 21000;
+
+    document.querySelectorAll('.preset-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        selectedSats = parseInt(this.dataset.sats, 10);
+        document.getElementById('custom-sats').value = '';
+      });
+    });
+
+    document.getElementById('custom-sats').addEventListener('input', function() {
+      document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+      selectedSats = parseInt(this.value, 10) || 0;
+    });
+
+    // Default: highlight first preset
+    document.querySelector('.preset-btn[data-sats="21000"]').classList.add('active');
+
+    document.getElementById('donate-btn').addEventListener('click', async function() {
+      const sats = selectedSats || parseInt(document.getElementById('custom-sats').value, 10);
+      if (!sats || sats < 1000) {
+        document.getElementById('custom-sats').style.borderColor = 'rgba(180,60,60,.5)';
+        return;
+      }
+      document.getElementById('custom-sats').style.borderColor = '';
+
+      this.disabled = true;
+      this.textContent = 'Connessione…';
+
+      try {
+        const res  = await fetch('/api/btc-donate', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ amount_sats: sats }),
+        });
+        const data = await res.json();
+
+        if (res.ok && data.checkout_url) {
+          window.open(data.checkout_url, '_blank', 'noopener');
+          document.getElementById('donate-ok').classList.add('show');
+          this.disabled = false;
+          this.innerHTML = 'Procedi con Bitcoin &nbsp;&#x20BF;';
+        } else {
+          throw new Error(data.error || 'Errore');
+        }
+      } catch (_) {
+        this.disabled = false;
+        this.innerHTML = 'Procedi con Bitcoin &nbsp;&#x20BF;';
+        alert('Qualcosa è andato storto. Riprova tra poco.');
+      }
+    });
 
     // ── Waitlist form
     document.getElementById('wl-form').addEventListener('submit', async function(e) {
