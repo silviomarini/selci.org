@@ -1,6 +1,6 @@
 {
   "crons": [
-    { "path": "/api/cron/release-expired-orders", "schedule": "*/15 * * * *" }
+    { "path": "/api/cron/release-expired-orders", "schedule": "0 3 * * *" }
   ],
   "headers": [
     {

@@ -8,6 +8,13 @@ import { releaseCoupon } from "@/lib/coupons";
  * degli ordini 'pending' la cui finestra di checkout è scaduta. Il webhook
  * checkout.session.expired dovrebbe già farlo — questo cron (vedi vercel.json)
  * copre i casi in cui l'evento non arriva mai.
+ *
+ * Cadenza giornaliera (0 3 * * *): il piano Vercel Hobby permette solo cron
+ * con frequenza minima di una volta al giorno (frequenze maggiori falliscono
+ * in deploy). Non è un problema di correttezza — il webhook resta il
+ * meccanismo primario e agisce entro secondi dalla scadenza della sessione
+ * Stripe; questo cron è solo la rete di sicurezza di ultima istanza. Passando
+ * al piano Pro si può aumentare la frequenza (es. ogni 15 minuti).
  */
 export async function GET(req: NextRequest) {
   const auth = req.headers.get("authorization");
