@@ -1,0 +1,187 @@
+/*
+ * Primitivi per i form/liste dei moduli shop, nello stesso linguaggio visivo
+ * del pacchetto @silviomarini/custodian (stesse custom properties di
+ * styles.css) — quel pacchetto non espone classi generiche per i form
+ * (solo .custodian-blog-form, specifiche del modulo blog), quindi le
+ * definiamo qui per i nostri moduli.
+ */
+
+.admin-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.admin-page-header h1 {
+  font-family: var(--custodian-font-ui);
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--custodian-text);
+}
+.admin-page-header a.admin-button,
+.admin-actions a.admin-button {
+  text-decoration: none;
+}
+
+.admin-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--custodian-border);
+  background: var(--custodian-surface);
+  color: var(--custodian-text);
+  font-family: var(--custodian-font-ui);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.15s ease, opacity 0.15s ease;
+}
+.admin-button:hover { background: var(--custodian-bg); }
+.admin-button:disabled { opacity: 0.55; cursor: not-allowed; }
+
+.admin-button--primary {
+  background: var(--custodian-accent);
+  border-color: var(--custodian-accent);
+  color: #fff;
+}
+.admin-button--primary:hover { opacity: 0.9; background: var(--custodian-accent); }
+
+.admin-button--danger {
+  background: var(--custodian-bg-danger);
+  border-color: var(--custodian-bg-danger);
+  color: var(--custodian-danger);
+}
+
+.admin-empty {
+  padding: 2.5rem 1rem;
+  text-align: center;
+  color: var(--custodian-text-muted);
+  font-family: var(--custodian-font-ui);
+  font-size: 0.9rem;
+}
+
+.admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  max-width: 640px;
+}
+
+.admin-form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.admin-form-row--split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.admin-form-row label {
+  font-family: var(--custodian-font-ui);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--custodian-text-secondary);
+}
+
+.admin-form-row input,
+.admin-form-row select,
+.admin-form-row textarea {
+  font-family: var(--custodian-font-ui);
+  font-size: 0.9rem;
+  color: var(--custodian-text);
+  background: var(--custodian-surface);
+  border: 1px solid var(--custodian-border);
+  border-radius: 0.5rem;
+  padding: 0.55rem 0.75rem;
+  outline: none;
+}
+.admin-form-row input:focus,
+.admin-form-row select:focus,
+.admin-form-row textarea:focus {
+  border-color: var(--custodian-accent);
+}
+.admin-form-row textarea { resize: vertical; min-height: 5rem; }
+
+.admin-form-hint {
+  font-family: var(--custodian-font-ui);
+  font-size: 0.75rem;
+  color: var(--custodian-text-muted);
+}
+
+.admin-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.admin-variant-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr auto;
+  gap: 0.6rem;
+  align-items: end;
+  padding: 0.85rem;
+  border: 1px solid var(--custodian-border);
+  border-radius: 0.6rem;
+  margin-bottom: 0.6rem;
+}
+.admin-variant-row .admin-form-row { gap: 0.25rem; }
+.admin-variant-row label { font-size: 0.68rem; }
+
+.admin-variants-section {
+  border-top: 1px solid var(--custodian-border);
+  padding-top: 1.25rem;
+  margin-top: 0.25rem;
+}
+.admin-variants-section h2 {
+  font-family: var(--custodian-font-ui);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--custodian-text);
+  margin-bottom: 0.75rem;
+}
+
+.admin-image-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 0.75rem;
+}
+.admin-image-thumb {
+  position: relative;
+  width: 84px;
+  height: 84px;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  border: 1px solid var(--custodian-border);
+}
+.admin-image-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.admin-image-thumb button {
+  position: absolute;
+  top: 2px; right: 2px;
+  width: 20px; height: 20px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(0,0,0,.6);
+  color: #fff;
+  font-size: 0.7rem;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.admin-order-items {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5rem;
+}
+.admin-order-items th, .admin-order-items td {
+  text-align: left;
+  padding: 0.5rem 0.6rem;
+  border-bottom: 1px solid var(--custodian-border);
+  font-size: 0.85rem;
+}

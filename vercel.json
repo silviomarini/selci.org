@@ -1,6 +1,7 @@
 {
-  "cleanUrls": true,
-  "trailingSlash": false,
+  "crons": [
+    { "path": "/api/cron/release-expired-orders", "schedule": "*/15 * * * *" }
+  ],
   "headers": [
     {
       "source": "/assets/(.*)",

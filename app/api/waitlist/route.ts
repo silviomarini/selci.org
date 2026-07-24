@@ -1,71 +1,46 @@
-module.exports = async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
+import { NextRequest, NextResponse } from "next/server";
+import { sendEmail } from "@/lib/resend";
 
-  const { email } = req.body || {};
+export async function POST(req: NextRequest) {
+  const { email } = await req.json().catch(() => ({ email: undefined }));
 
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return res.status(400).json({ error: 'Email non valida' });
+    return NextResponse.json({ error: "Email non valida" }, { status: 400 });
   }
 
-  const { SUPABASE_URL, SUPABASE_SERVICE_KEY, RESEND_API_KEY, FROM_EMAIL } = process.env;
+  const { NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY } = process.env;
 
-  // ── Save to Supabase ───────────────────────────────────────────────────────
-  let dbRes;
+  let dbRes: Response;
   try {
-    dbRes = await fetch(`${SUPABASE_URL}/rest/v1/waitlist`, {
-      method: 'POST',
+    dbRes = await fetch(`${NEXT_PUBLIC_SUPABASE_URL}/rest/v1/waitlist`, {
+      method: "POST",
       headers: {
-        apikey: SUPABASE_SERVICE_KEY,
-        Authorization: `Bearer ${SUPABASE_SERVICE_KEY}`,
-        'Content-Type': 'application/json',
-        Prefer: 'return=minimal',
+        apikey: SUPABASE_SERVICE_ROLE_KEY!,
+        Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+        "Content-Type": "application/json",
+        Prefer: "return=minimal",
       },
       body: JSON.stringify({ email }),
     });
   } catch (err) {
-    console.error('Supabase fetch error:', err);
-    return res.status(500).json({ error: 'Errore di rete verso il database' });
+    console.error("Supabase fetch error:", err);
+    return NextResponse.json({ error: "Errore di rete verso il database" }, { status: 500 });
   }
 
   if (!dbRes.ok && dbRes.status !== 409) {
-    console.error('Supabase error', dbRes.status, await dbRes.text());
-    return res.status(500).json({ error: 'Errore salvataggio' });
+    console.error("Supabase error", dbRes.status, await dbRes.text());
+    return NextResponse.json({ error: "Errore salvataggio" }, { status: 500 });
   }
 
   const alreadyRegistered = dbRes.status === 409;
 
-  // ── Send confirmation email ────────────────────────────────────────────────
-  if (!alreadyRegistered && RESEND_API_KEY) {
-    try {
-      const emailRes = await fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${RESEND_API_KEY}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          from: FROM_EMAIL || 'selci <noreply@selci.org>',
-          to: [email],
-          subject: 'Sei nella lista — selci',
-          html: buildEmail(email),
-        }),
-      });
-
-      if (!emailRes.ok) {
-        console.error('Resend error', emailRes.status, await emailRes.text());
-        // Don't block the response — email is secondary to saving the record
-      }
-    } catch (err) {
-      console.error('Resend fetch error:', err);
-    }
+  if (!alreadyRegistered) {
+    await sendEmail({ to: email, subject: "Sei nella lista — selci", html: buildEmail() });
   }
 
-  return res.status(200).json({ ok: true });
-};
+  return NextResponse.json({ ok: true });
+}
 
-// ── Email template ─────────────────────────────────────────────────────────
 function buildEmail() {
   return `<!DOCTYPE html>
 <html lang="it" xmlns="http://www.w3.org/1999/xhtml">
@@ -81,14 +56,11 @@ function buildEmail() {
     <tr>
       <td style="padding:40px 16px;background:#F2EDE0;">
 
-        <!-- Card wrapper -->
         <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"
                style="max-width:560px;margin:0 auto;">
 
-          <!-- ── Header ── -->
           <tr>
             <td style="background:#2A4A1A;padding:44px 48px 40px;text-align:center;">
-              <!-- Logo lockup -->
               <img src="https://selci.org/assets/images/logo-full-black.png"
                    alt="selci" width="120" height="auto"
                    style="display:block;margin:0 auto 16px;filter:brightness(0) invert(1);opacity:0.9;">
@@ -96,7 +68,6 @@ function buildEmail() {
             </td>
           </tr>
 
-          <!-- ── Body ── -->
           <tr>
             <td style="background:#FAFAF5;padding:48px 48px 40px;">
 
@@ -106,7 +77,6 @@ function buildEmail() {
                 Sei dentro.<br><span style="font-style:italic;">Benvenuto.</span>
               </h1>
 
-              <!-- Divider rule -->
               <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin-bottom:24px;">
                 <tr><td style="width:38px;height:1px;background:#4A7030;font-size:0;line-height:0;">&nbsp;</td></tr>
               </table>
@@ -123,7 +93,6 @@ function buildEmail() {
                 Grazie per esserti unito a noi — ci vediamo presto.
               </p>
 
-              <!-- Highlight box -->
               <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"
                      style="background:#F2EDE0;border:1px solid rgba(42,74,26,0.14);border-left:3px solid #2A4A1A;">
                 <tr>
@@ -137,7 +106,6 @@ function buildEmail() {
             </td>
           </tr>
 
-          <!-- ── Divider ── -->
           <tr>
             <td style="background:#FAFAF5;padding:0 48px;">
               <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
@@ -146,7 +114,6 @@ function buildEmail() {
             </td>
           </tr>
 
-          <!-- ── Footer ── -->
           <tr>
             <td style="background:#FAFAF5;padding:28px 48px 32px;text-align:center;">
               <p style="margin:0 0 10px;font-family:Georgia,'Times New Roman',Times,serif;font-size:18px;font-weight:400;letter-spacing:4px;color:#2A4A1A;text-transform:lowercase;">selci</p>
@@ -157,13 +124,11 @@ function buildEmail() {
             </td>
           </tr>
 
-          <!-- ── Bottom bar ── -->
           <tr>
             <td style="background:#2A4A1A;height:4px;font-size:0;line-height:0;">&nbsp;</td>
           </tr>
 
         </table>
-        <!-- /Card wrapper -->
 
       </td>
     </tr>

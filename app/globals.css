@@ -1,0 +1,800 @@
+/* ─── TOKENS ─────────────────────────────── */
+:root {
+  --cream:   #F2EDE0;
+  --forest:  #2A4A1A;
+  --sage:    #4A7030;
+  --sand:    #C8B898;
+  --dark:    #141410;
+  --white:   #FAFAF5;
+  --serif:   'Cormorant Garamond', Georgia, serif;
+  --sans:    'Jost', -apple-system, sans-serif;
+  --ease:    cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* ─── RESET ──────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+img  { display: block; max-width: 100%; }
+
+/*
+ * Scoped under .selci-site rather than `body` — the marketing site and the
+ * /custodian admin panel share one <body> (Next.js root layout), and the
+ * admin panel must not inherit this font-weight/background.
+ */
+.selci-site {
+  background: var(--cream);
+  color: var(--dark);
+  font-family: var(--sans);
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+/* ─── NAV ────────────────────────────────── */
+.selci-site nav {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 100;
+  padding: 1.1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background .4s, box-shadow .4s;
+}
+.selci-site nav.scrolled {
+  background: rgba(242,237,224,.95);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 1px 0 rgba(42,74,26,.08);
+}
+
+.selci-site .nav-logo {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  text-decoration: none;
+  color: var(--forest);
+}
+.selci-site .nav-logo img { width: 26px; height: 26px; object-fit: contain; }
+.selci-site .nav-logo-text {
+  font-family: var(--serif);
+  font-size: 1.35rem;
+  font-weight: 400;
+  letter-spacing: .06em;
+}
+
+.selci-site .nav-actions {
+  display: flex;
+  align-items: center;
+  gap: .9rem;
+}
+
+.selci-site .btn-pill {
+  padding: .55rem 1.3rem;
+  background: var(--forest);
+  color: var(--cream);
+  border: none;
+  font-family: var(--sans);
+  font-size: .68rem;
+  font-weight: 500;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background .25s;
+  border-radius: 999px;
+}
+.selci-site .btn-pill:hover { background: var(--dark); }
+
+.selci-site .cart-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  background: transparent;
+  border: 1px solid rgba(42,74,26,.28);
+  border-radius: 999px;
+  color: var(--forest);
+  cursor: pointer;
+  transition: border-color .25s;
+}
+.selci-site .cart-toggle:hover { border-color: var(--forest); }
+.selci-site .cart-count {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: var(--forest);
+  color: var(--cream);
+  font-size: .62rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ─── HERO ───────────────────────────────── */
+.selci-site .hero {
+  display: flex;
+  flex-direction: column-reverse; /* image on top mobile */
+  min-height: 100svh;
+  padding-top: 62px;
+}
+
+.selci-site .hero-content {
+  padding: 2.5rem 1.5rem 3.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.selci-site .eyebrow {
+  font-size: .63rem;
+  font-weight: 500;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--sage);
+  margin-bottom: 1.2rem;
+}
+.selci-site .hero-title {
+  font-family: var(--serif);
+  font-size: clamp(3rem, 12vw, 5rem);
+  font-weight: 300;
+  line-height: 1.04;
+  color: var(--forest);
+  margin-bottom: 1.4rem;
+}
+.selci-site .hero-title em { font-style: italic; }
+
+.selci-site .rule { width: 38px; height: 1px; background: var(--sage); margin-bottom: 1.4rem; }
+
+.selci-site .hero-desc {
+  font-size: .93rem;
+  line-height: 1.75;
+  color: rgba(20,20,16,.55);
+  max-width: 38ch;
+  margin-bottom: 2.2rem;
+}
+.selci-site .btn-solid {
+  display: inline-flex;
+  align-items: center;
+  gap: .65rem;
+  padding: .9rem 1.8rem;
+  background: var(--forest);
+  color: var(--cream);
+  text-decoration: none;
+  font-family: var(--sans);
+  font-size: .75rem;
+  font-weight: 500;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  border-radius: 3px;
+  align-self: flex-start;
+  transition: background .25s, transform .2s;
+}
+.selci-site .btn-solid:hover { background: var(--dark); transform: translateY(-1px); }
+.selci-site .btn-solid:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+.selci-site .btn-solid .arr { transition: transform .25s; }
+.selci-site .btn-solid:hover .arr { transform: translateX(4px); }
+
+.selci-site .hero-img-wrap {
+  width: 100%;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.selci-site .hero-img-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center top;
+}
+
+@media (min-width: 768px) {
+  .selci-site .hero {
+    flex-direction: row;
+    min-height: 100svh;
+    padding-top: 0;
+  }
+  .selci-site .hero-content {
+    flex: 1;
+    padding: 7rem 4rem 5rem clamp(2rem, 5vw, 6rem);
+    padding-top: max(100px, 8vh);
+  }
+  .selci-site .hero-img-wrap {
+    width: 48%;
+    aspect-ratio: unset;
+    align-self: stretch;
+  }
+  .selci-site .hero-img-wrap img { height: 100%; }
+}
+@media (min-width: 1100px) {
+  .selci-site .hero-content { padding: 7rem 5rem 5rem 8vw; }
+}
+
+/* ─── TICKER ─────────────────────────────── */
+.selci-site .ticker {
+  background: var(--forest);
+  padding: 1rem 0;
+  overflow: hidden;
+  user-select: none;
+}
+.selci-site .ticker-track {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: ticker 28s linear infinite;
+}
+.selci-site .ticker-track span {
+  font-size: .65rem;
+  font-weight: 500;
+  letter-spacing: .25em;
+  text-transform: uppercase;
+  color: rgba(242,237,224,.6);
+  padding: 0 1.8rem;
+}
+.selci-site .ticker-track span.dot { color: var(--sand); padding: 0; }
+@keyframes ticker { to { transform: translateX(-50%); } }
+
+/* ─── SHOP / COLLECTION ──────────────────── */
+.selci-site .collection { padding: 5rem 1.5rem; }
+
+.selci-site .section-head { margin-bottom: 3rem; }
+.selci-site .section-head-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+.selci-site .section-tag {
+  font-size: .63rem;
+  font-weight: 500;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--sage);
+  margin-bottom: .8rem;
+}
+.selci-site .section-title {
+  font-family: var(--serif);
+  font-size: clamp(2.2rem, 7vw, 3.8rem);
+  font-weight: 300;
+  line-height: 1.08;
+  color: var(--forest);
+}
+.selci-site .section-title em { font-style: italic; }
+
+.selci-site .products-grid {
+  display: grid;
+  gap: 1.4rem;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 580px)  { .selci-site .products-grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 900px)  {
+  .selci-site .products-grid { grid-template-columns: 1fr 1fr 1fr; }
+  .selci-site .collection { padding: 6rem 4rem; }
+}
+@media (min-width: 1200px) { .selci-site .collection { padding: 8rem 6rem; } }
+
+.selci-site .product-card { cursor: pointer; text-decoration: none; display: block; color: inherit; }
+
+.selci-site .product-card-img {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4/5;
+  overflow: hidden;
+  background: var(--sand);
+}
+.selci-site .product-card-img img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform .65s var(--ease);
+}
+.selci-site .product-card:hover .product-card-img img { transform: scale(1.05); }
+
+.selci-site .product-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(42,74,26,.82);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity .35s ease;
+}
+.selci-site .product-card:hover .product-overlay { opacity: 1; }
+.selci-site .product-overlay span {
+  font-size: .72rem;
+  font-weight: 500;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--cream);
+  border-bottom: 1px solid rgba(242,237,224,.4);
+  padding-bottom: .3rem;
+}
+
+.selci-site .product-badge {
+  position: absolute;
+  top: .9rem; left: .9rem;
+  background: var(--forest);
+  color: var(--cream);
+  padding: .28rem .65rem;
+  font-size: .58rem;
+  font-weight: 500;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.selci-site .product-badge.sale { background: var(--dark); }
+
+.selci-site .product-info { padding: 1rem 0 0; }
+.selci-site .product-name {
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  font-weight: 400;
+  color: var(--forest);
+  margin-bottom: .25rem;
+}
+.selci-site .product-sub {
+  font-size: .75rem;
+  font-weight: 300;
+  letter-spacing: .04em;
+  color: rgba(20,20,16,.45);
+}
+.selci-site .product-price {
+  margin-top: .4rem;
+  font-size: .88rem;
+  font-weight: 400;
+  color: var(--dark);
+}
+.selci-site .product-price .compare-at {
+  margin-left: .5rem;
+  color: rgba(20,20,16,.4);
+  text-decoration: line-through;
+}
+
+.selci-site .load-more-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+}
+.selci-site .btn-outline {
+  padding: .85rem 2rem;
+  background: transparent;
+  border: 1px solid var(--forest);
+  color: var(--forest);
+  font-family: var(--sans);
+  font-size: .72rem;
+  font-weight: 500;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: background .25s, color .25s;
+}
+.selci-site .btn-outline:hover { background: var(--forest); color: var(--cream); }
+.selci-site .btn-outline:disabled { opacity: .5; cursor: not-allowed; }
+
+.selci-site .empty-note {
+  font-size: .85rem;
+  color: rgba(20,20,16,.45);
+}
+
+/* ─── BRAND STORY ────────────────────────── */
+.selci-site .brand-story {
+  background: var(--forest);
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  padding: 5rem 1.5rem;
+}
+@media (min-width: 768px) {
+  .selci-site .brand-story {
+    flex-direction: row;
+    align-items: center;
+    gap: 5vw;
+    padding: 7rem 5vw;
+  }
+  .selci-site .brand-story-img { width: 42%; flex-shrink: 0; }
+}
+@media (min-width: 1100px) { .selci-site .brand-story { padding: 9rem 8vw; } }
+
+.selci-site .brand-story-img img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+.selci-site .brand-story .section-tag  { color: rgba(242,237,224,.45); }
+.selci-site .brand-story .section-title { color: var(--cream); }
+
+.selci-site .brand-story-text {
+  font-size: 1rem;
+  line-height: 1.82;
+  color: rgba(242,237,224,.65);
+  margin-top: 1.4rem;
+  max-width: 48ch;
+}
+
+.selci-site .stats {
+  display: flex;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(242,237,224,.12);
+}
+.selci-site .stat-val {
+  font-family: var(--serif);
+  font-size: 2.2rem;
+  font-weight: 300;
+  color: var(--cream);
+  line-height: 1;
+}
+.selci-site .stat-label {
+  font-size: .63rem;
+  font-weight: 400;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: rgba(242,237,224,.4);
+  margin-top: .3rem;
+}
+
+/* ─── WAITLIST ───────────────────────────── */
+.selci-site .waitlist {
+  padding: 6rem 1.5rem;
+  text-align: center;
+}
+@media (min-width: 768px) { .selci-site .waitlist { padding: 9rem 2rem; } }
+
+.selci-site .waitlist-inner { max-width: 520px; margin: 0 auto; }
+
+.selci-site .waitlist .rule { margin: 1.4rem auto; }
+
+.selci-site .waitlist-desc {
+  font-size: .93rem;
+  line-height: 1.75;
+  color: rgba(20,20,16,.52);
+  margin-bottom: 2.5rem;
+}
+
+.selci-site .waitlist-form {
+  display: flex;
+  flex-direction: column;
+  gap: .85rem;
+}
+@media (min-width: 460px) { .selci-site .waitlist-form { flex-direction: row; } }
+
+.selci-site .waitlist-form input[type="email"] {
+  flex: 1;
+  padding: .9rem 1.2rem;
+  background: transparent;
+  border: 1px solid rgba(42,74,26,.28);
+  outline: none;
+  font-family: var(--sans);
+  font-size: .88rem;
+  font-weight: 300;
+  color: var(--dark);
+  border-radius: 3px;
+  transition: border-color .25s;
+}
+.selci-site .waitlist-form input::placeholder { color: rgba(20,20,16,.3); }
+.selci-site .waitlist-form input:focus { border-color: var(--forest); }
+.selci-site .waitlist-form .btn-solid { align-self: stretch; justify-content: center; }
+
+.selci-site .waitlist-ok {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: .8rem;
+  padding: 1.2rem;
+  background: rgba(42,74,26,.07);
+  border: 1px solid rgba(42,74,26,.18);
+  color: var(--forest);
+  font-size: .88rem;
+  border-radius: 3px;
+}
+.selci-site .waitlist-ok.show { display: flex; }
+.selci-site .waitlist-ok .check {
+  width: 20px; height: 20px;
+  background: var(--forest);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cream);
+  font-size: .7rem;
+  flex-shrink: 0;
+}
+
+/* ─── FOOTER ─────────────────────────────── */
+.selci-site footer {
+  background: var(--dark);
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  text-align: center;
+}
+@media (min-width: 600px) {
+  .selci-site footer {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+    padding: 1.8rem 3.5rem;
+  }
+}
+.selci-site .footer-logo {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  color: var(--cream);
+}
+.selci-site .footer-logo img { width: 20px; height: 20px; object-fit: contain; filter: brightness(0) invert(1); opacity: .75; }
+.selci-site .footer-logo-text {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  font-weight: 400;
+  letter-spacing: .06em;
+}
+.selci-site .footer-copy {
+  font-size: .68rem;
+  letter-spacing: .06em;
+  color: rgba(242,237,224,.28);
+}
+.selci-site .footer-links {
+  display: flex;
+  gap: 1.5rem;
+}
+.selci-site .footer-links a {
+  font-size: .68rem;
+  font-weight: 500;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(242,237,224,.38);
+  text-decoration: none;
+  transition: color .2s;
+}
+.selci-site .footer-links a:hover { color: var(--cream); }
+
+/* ─── MODAL / DRAWER (product quick-view, cart) ──── */
+.selci-site .modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(20,20,16,.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .35s ease;
+}
+.selci-site .modal-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+.selci-site .modal-card {
+  background: var(--cream);
+  max-width: 480px;
+  width: 100%;
+  padding: 3rem 2.5rem 2.5rem;
+  position: relative;
+  text-align: center;
+  transform: translateY(20px) scale(.97);
+  transition: transform .35s var(--ease);
+}
+.selci-site .modal-overlay.open .modal-card {
+  transform: translateY(0) scale(1);
+}
+.selci-site .modal-close {
+  position: absolute;
+  top: 1.1rem; right: 1.1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(20,20,16,.35);
+  font-size: 1.1rem;
+  transition: color .2s;
+  padding: 0;
+}
+.selci-site .modal-close:hover { color: var(--dark); }
+.selci-site .modal-tag {
+  font-size: .62rem;
+  font-weight: 500;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--sage);
+  margin-bottom: .9rem;
+}
+.selci-site .modal-title {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 7vw, 2.8rem);
+  font-weight: 300;
+  line-height: 1.08;
+  color: var(--forest);
+  margin-bottom: 1.2rem;
+}
+.selci-site .modal-title em { font-style: italic; }
+.selci-site .modal-rule { width: 32px; height: 1px; background: var(--sage); margin: 0 auto 1.2rem; }
+.selci-site .modal-text {
+  font-size: .92rem;
+  line-height: 1.75;
+  color: rgba(20,20,16,.55);
+  margin-bottom: 2rem;
+}
+.selci-site .modal-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: .6rem;
+  padding: .9rem 1.8rem;
+  background: var(--forest);
+  color: var(--cream);
+  border: none;
+  font-family: var(--sans);
+  font-size: .75rem;
+  font-weight: 500;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: background .25s;
+}
+.selci-site .modal-cta:hover { background: var(--dark); }
+
+/* Cart drawer: same overlay, card docked to the right edge instead of centered */
+.selci-site .drawer-overlay { justify-content: flex-end; padding: 0; }
+.selci-site .drawer-card {
+  background: var(--white);
+  max-width: 420px;
+  width: 100%;
+  height: 100%;
+  padding: 2rem 1.75rem;
+  text-align: left;
+  transform: translateX(100%);
+  transition: transform .4s var(--ease);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+.selci-site .drawer-overlay.open .drawer-card { transform: translateX(0); }
+
+/* ─── PRODUCT DETAIL ─────────────────────── */
+.selci-site .product-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  padding: 6.5rem 1.5rem 5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+@media (min-width: 860px) {
+  .selci-site .product-detail { flex-direction: row; gap: 4rem; padding: 8rem 4rem 6rem; }
+  .selci-site .product-gallery { width: 50%; flex-shrink: 0; position: sticky; top: 6rem; align-self: flex-start; }
+  .selci-site .product-detail-info { flex: 1; padding-top: 0.5rem; }
+}
+
+.selci-site .product-gallery-main {
+  width: 100%;
+  aspect-ratio: 4/5;
+  overflow: hidden;
+  background: var(--sand);
+}
+.selci-site .product-gallery-main img { width: 100%; height: 100%; object-fit: cover; }
+
+.selci-site .product-gallery-thumbs {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 0.6rem;
+}
+.selci-site .product-gallery-thumb {
+  width: 64px;
+  height: 80px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid transparent;
+  padding: 0;
+  background: var(--sand);
+}
+.selci-site .product-gallery-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.selci-site .product-gallery-thumb.active { border-color: var(--forest); }
+
+.selci-site .product-detail-title {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  font-weight: 300;
+  color: var(--forest);
+  line-height: 1.1;
+  margin: 0.5rem 0 1rem;
+}
+
+.selci-site .product-detail-price {
+  font-size: 1.15rem;
+  color: var(--dark);
+  margin-bottom: 1.6rem;
+}
+.selci-site .product-detail-price .compare-at {
+  margin-left: 0.6rem;
+  text-decoration: line-through;
+  color: rgba(20, 20, 16, 0.4);
+  font-size: 0.95rem;
+}
+
+.selci-site .variant-group { margin-bottom: 1.3rem; }
+.selci-site .variant-group-label {
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sage);
+  margin-bottom: 0.6rem;
+}
+.selci-site .variant-options { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.selci-site .variant-option {
+  padding: 0.55rem 1.1rem;
+  border: 1px solid rgba(42, 74, 26, 0.3);
+  background: transparent;
+  color: var(--dark);
+  cursor: pointer;
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  border-radius: 3px;
+  transition: background-color 0.2s, color 0.2s;
+}
+.selci-site .variant-option.selected { background: var(--forest); color: var(--cream); border-color: var(--forest); }
+.selci-site .variant-option:disabled { opacity: 0.35; cursor: not-allowed; text-decoration: line-through; }
+
+.selci-site .qty-stepper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.6rem;
+}
+.selci-site .qty-stepper button {
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(42, 74, 26, 0.3);
+  background: transparent;
+  cursor: pointer;
+  font-size: 1rem;
+  border-radius: 3px;
+}
+.selci-site .qty-stepper button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.selci-site .stock-label { font-size: 0.8rem; margin-bottom: 1.2rem; color: var(--sage); }
+.selci-site .stock-label.low { color: #a3502d; }
+.selci-site .stock-label.out { color: rgba(20, 20, 16, 0.4); }
+
+.selci-site .product-detail-description {
+  margin-top: 2.2rem;
+  padding-top: 2.2rem;
+  border-top: 1px solid rgba(42, 74, 26, 0.12);
+  line-height: 1.8;
+  color: rgba(20, 20, 16, 0.6);
+  font-size: 0.92rem;
+  white-space: pre-wrap;
+}
+
+.selci-site .product-detail-meta {
+  margin-top: 1.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  color: rgba(20, 20, 16, 0.4);
+}
+
+/* ─── SCROLL REVEAL ──────────────────────── */
+.selci-site .reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity .7s ease, transform .7s ease;
+}
+.selci-site .reveal.in { opacity: 1; transform: none; }
+.selci-site .reveal.delay-1 { transition-delay: .1s; }
+.selci-site .reveal.delay-2 { transition-delay: .2s; }
+.selci-site .reveal.delay-3 { transition-delay: .3s; }
